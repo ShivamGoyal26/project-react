@@ -349,7 +349,7 @@ const Devbar = () => {
   };
 
   return (
-    <div className='relative h-screen w-[700px] flex-col items-center overflow-auto bg-card'>
+    <div className='items relative h-screen w-[700px] flex-col overflow-auto bg-card'>
       <div className='flex flex-row items-center justify-between gap-4 p-4'>
         <div className='flex flex-row items-center gap-3'>
           <img
