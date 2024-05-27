@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import api from '@/api';
-import ListingDetailsCard from '@/components/ListingDetailsCard';
+import ListingDetailsCard from '@/components/ListingDetailCard';
 import { Spinner } from '@/components/ui';
 
 const ListingDetailsPage = () => {
