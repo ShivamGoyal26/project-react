@@ -1,4 +1,5 @@
 import Devbar from '@/components/Devbar/Devbar';
+// files
 import HomePage from '@/pages/HomePage';
 
 const App = () => {
