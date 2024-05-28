@@ -1,7 +1,10 @@
 import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import api from '@/api';
+import { getItem, setItem } from '@/lib/utils/localStorage';
+
+const STALE_TIME = 5 * 60 * 1000; // 5 minutes
 
 const useFetch = (url, options) => {
   const [data, setData] = useState();
@@ -10,12 +13,29 @@ const useFetch = (url, options) => {
 
   const abortControllerRef = useRef(null);
 
+  const storageKey = useMemo(() => {
+    if (!options?.params) {
+      return url;
+    }
+
+    return url + '?' + JSON.stringify(options.params);
+  }, [options, url]);
+
   useEffect(() => {
     const fetchData = async () => {
-      setError(null);
-      setIsLoading(true);
+      const currentTime = new Date().getTime();
+      const cachedData = getItem(storageKey);
+
+      if (cachedData && currentTime - cachedData.lastFetched < STALE_TIME) {
+        setData(cachedData.data);
+        setIsLoading(false);
+        return;
+      }
 
       abortControllerRef.current = new AbortController();
+
+      setError(null);
+      setIsLoading(true);
 
       try {
         const response = await api.get(url, {
@@ -39,7 +59,16 @@ const useFetch = (url, options) => {
     return () => {
       abortControllerRef.current?.abort();
     };
-  }, [options, url]);
+  }, [options, storageKey, url]);
+
+  useEffect(() => {
+    if (!data) return;
+
+    setItem(storageKey, {
+      lastFetched: new Date().getTime(),
+      data,
+    });
+  }, [data, storageKey]);
 
   return { data, error, isLoading };
 };

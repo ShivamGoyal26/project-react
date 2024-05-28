@@ -1,1 +1,1 @@
-console.log(typeof typeof JSON.stringify(['name', 'india']));
+console.log({ name: 2, india: 3 });
