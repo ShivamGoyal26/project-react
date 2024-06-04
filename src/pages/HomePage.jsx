@@ -6,6 +6,7 @@ import LisitingFilters from '@/components/LisitingFilters';
 import ListingList from '@/components/ListingList';
 import { Separator } from '@/components/ui';
 import { fetchListings } from '@/state/listings/listingsSlice';
+import { getArray } from '@/utils';
 
 const HomePage = () => {
   const { listings, error, status } = useSelector((state) => state.listings);
@@ -37,6 +38,7 @@ const HomePage = () => {
         <LisitingFilters onChange={handleFilters} />
         <Separator className='my-4' />
       </div>
+
       <DataRenderer error={error} isLoading={status === 'loading'}>
         <ListingList listings={listings} />
       </DataRenderer>
